@@ -1,0 +1,6 @@
+ollama 
+fastapi 
+uvicorn
+pillow
+python-multipart
+requests
