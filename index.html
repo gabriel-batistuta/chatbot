@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatobot</title>
+  <link rel="stylesheet" href="public/styles.css">
+  <link rel="shortcut icon" href="assets/chatbot.jpg" type="image/x-icon">
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <h3>Conversas</h3>
+      <div id="conversation-list" class="conversation-list">
+
+      </div>
+      <button id="new-conversation-btn" class="new-conversation-btn">Nova Conversa</button>
+    </div>
+    <div class="chat-container">
+      <div class="chat-header">
+        <h2>Chatobot</h2>
+      </div>
+      <div class="chat-box" id="chat-box">
+        <div class="message bot">
+          <p>Olá! Como posso te ajudar?</p>
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" id="user-input" placeholder="Digite sua mensagem...">
+        <button id="send-btn">Enviar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="public/script.js" defer></script>
+</body>
+</html>
