@@ -38,15 +38,31 @@ async def process_text_stream(text: str = Form(...)):
         print(f"Texto recebido: {text}")
 
         async def stream_response():
+            f = open('file.json', 'r')
+            uern = json.load(f)
+            tools = []
+            tools.extend(uern["pages"])
+            print(tools)
+            with open('file.txt', 'w') as f:
+                f.write(str(tools))
+            ex = {
+                "name":"search",
+                "title":"reitoria da uern",
+                "text":"a reitoria da uern é composta por cicilia maia"
+            }
             response = client.chat(
-                model="llama3",
-                messages=[{"role": "user", "content": text}],
+                model="llama3.2",
+                messages=[
+                    {"role": "user", "content": f'leve em consideração essas informações: {ex}'},
+                    {"role": "user", "content": text}
+                    ],
+                # tools=tools,
                 stream=True,
             )
             
-            print(dir(response))  # Para depuração, imprime métodos disponíveis
-            print(response)       # Confirma o objeto retornado
-            print(type(response)) # Exibe o tipo do objeto retornado
+            # print(dir(response))  # Para depuração, imprime métodos disponíveis
+            # print(response)       # Confirma o objeto retornado
+            # print(type(response)) # Exibe o tipo do objeto retornado
 
             for chunk in response:
                 print(f"Chunk recebido: {chunk}")  # Loga o chunk recebido

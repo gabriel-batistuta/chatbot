@@ -4,3 +4,11 @@ uvicorn
 pillow
 python-multipart
 requests
+bs4
+requests
+pdfplumber
+PyMuPDF
+transformers
+datasets
+accelerate
+huggingface_hub[cli]
