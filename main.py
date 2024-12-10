@@ -36,73 +36,28 @@ async def process_text_stream(text: str = Form(...)):
     """
     try:
         print(f"Texto recebido: {text}")
-
         async def stream_response():
-            f = open('file.json', 'r')
-            uern = json.load(f)
-            tools = []
-            tools.extend(uern["pages"])
-            print(tools)
-            with open('file.txt', 'w') as f:
-                f.write(str(tools))
-            ex = {
-                "name":"search",
-                "title":"reitoria da uern",
-                "text":"a reitoria da uern é composta por cicilia maia"
-            }
             response = client.chat(
                 model="llama3.2",
                 messages=[
-                    {"role": "user", "content": f'leve em consideração essas informações: {ex}'},
                     {"role": "user", "content": text}
-                    ],
-                # tools=tools,
+                ],
                 stream=True,
             )
-            
-            # print(dir(response))  # Para depuração, imprime métodos disponíveis
-            # print(response)       # Confirma o objeto retornado
-            # print(type(response)) # Exibe o tipo do objeto retornado
 
             for chunk in response:
-                print(f"Chunk recebido: {chunk}")  # Loga o chunk recebido
-                if "message" in chunk and "content" in chunk["message"]:  # Verifica a estrutura
-                    yield chunk["message"]["content"]  # Envia o conteúdo do chunk
-                    await asyncio.sleep(0)  # Libera o loop para continuar
+                print(f"Chunk recebido: {chunk}")
+                if "message" in chunk and "content" in chunk["message"]:
+                    yield chunk["message"]["content"]
+                    await asyncio.sleep(0)
                 else:
-                    print(f"Chunk sem conteúdo relevante: {chunk}")  # Log para chunks inesperados
-
+                    print(f"Chunk sem conteúdo relevante: {chunk}")
 
         return StreamingResponse(stream_response(), media_type="text/plain")
 
     except Exception as e:
         print(f"Erro ao processar texto: {e}")
         raise HTTPException(status_code=500, detail=f"Erro ao processar texto: {e}")
-
-
-# @app.post("/chatbot/text/")
-# async def process_text(text: str = Form(...)):
-#     """
-#     Processa entrada de texto e retorna a resposta gerada pelo modelo.
-#     """
-#     try:
-#         print(f"Texto recebido: {text}")  # Loga o texto recebido
-#         # Realiza a consulta ao modelo LLaMA
-#         response = client.chat(
-#             model="llama3",
-#             messages=[{"role": "user", "content": text}],
-#         )
-#         print(f"Resposta do modelo: {response['message']['content']}")  # Loga a resposta do modelo
-#         # print(type(response))
-#         # print(dir(response))
-#         return response['message']['content']
-
-#     except ValueError as ve:
-#         print(f"Erro de validação: {ve}")
-#         raise HTTPException(status_code=400, detail=str(ve))
-#     except Exception as e:
-#         print(f"Erro no servidor: {e}")
-#         raise HTTPException(status_code=500, detail=f"Erro ao processar texto: {e}")
 
 @app.post("/chatbot/image/")
 async def process_image(file: UploadFile = File(...)):
